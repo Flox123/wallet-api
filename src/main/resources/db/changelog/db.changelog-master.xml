@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd">
+    <includeAll path="com/example/db/changelog/"/>
+
+    <changeSet id="100" author="maxim.afanasiev">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="STATEMENT_CATEGORY"/>
+            </not>
+        </preConditions>
+        <createTable tableName="STATEMENT_CATEGORY">
+            <column name="id" type="number(20,0)"/>
+            <column name="name" type="varchar(25)"/>
+        </createTable>
+
+        <addPrimaryKey tableName="STATEMENT_CATEGORY" columnNames="id"/>
+        <addUniqueConstraint tableName="STATEMENT_CATEGORY" columnNames="name"/>
+    </changeSet>
+
+    <changeSet id="102" author="maxim.afanasiev">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="STATEMENT"/>
+            </not>
+        </preConditions>
+        <createTable tableName="STATEMENT">
+            <column name="id" type="number(20,0)"/>
+            <column name="amount" type="number(20,2)"/>
+            <column name="date" type="date"/>
+            <column name="statement_category_id" type="number(20,0)"/>
+        </createTable>
+
+        <addPrimaryKey tableName="STATEMENT" columnNames="id"/>
+        <addForeignKeyConstraint baseTableName="STATEMENT" baseColumnNames="statement_category_id" constraintName="fk_statement_category" referencedTableName="STATEMENT_CATEGORY"
+                                 referencedColumnNames="id"/>
+
+
+    </changeSet>
+
+    <changeSet id="103" author="maxim.afanasiev">
+        <addColumn tableName="STATEMENT">
+            <column type="number(3,0)" name="type"/>
+        </addColumn>
+
+        <addNotNullConstraint tableName="STATEMENT_CATEGORY" columnName="name"/>
+        <addNotNullConstraint tableName="STATEMENT" columnName="amount"/>
+        <addNotNullConstraint tableName="STATEMENT" columnName="date"/>
+        <addNotNullConstraint tableName="STATEMENT" columnName="statement_category_id"/>
+        <addNotNullConstraint tableName="STATEMENT" columnName="statement_category_id"/>
+
+    </changeSet>
+
+    <changeSet id="104_1" author="maxim.afanasiev">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="WALLET"/>
+            </not>
+        </preConditions>
+        <createTable tableName="WALLET">
+            <column name="id" type="number(20,0)"/>
+            <column name="name" type="varchar(100)"/>
+        </createTable>
+
+        <addNotNullConstraint tableName="WALLET" columnName="name"/>
+        <addPrimaryKey tableName="WALLET" columnNames="id"/>
+    </changeSet>
+
+    <changeSet id="105_1" author="maxim.afanasiev">
+        <preConditions>
+            <not>
+                <columnExists tableName="STATEMENT" columnName="WALLET_ID"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="STATEMENT">
+            <column name = "WALLET_ID" type="number(20,0)"/>
+        </addColumn>
+
+        <addForeignKeyConstraint baseTableName="STATEMENT" baseColumnNames="WALLET_ID" constraintName="fk_wallet" referencedTableName="WALLET"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="106" author="maxim.afanasiev">
+        <addUniqueConstraint tableName="WALLET" columnNames="name"/>
+    </changeSet>
+
+    <changeSet id="107" author="maxim.afanasiev">
+        <addColumn tableName="statement_category">
+            <column name="wallet_id" type="number(20,0)"/>
+        </addColumn>
+
+        <addForeignKeyConstraint baseTableName="statement_category" baseColumnNames="wallet_id" constraintName="fk_wallet_category" referencedTableName="wallet"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+    <changeSet id="108" author="maxim.afanasiev">
+        <preConditions>
+            <not>
+                <tableExists tableName="user_account"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="user_account">
+            <column name="id" type="number(20,0)"/>
+            <column name="login_name" type="varchar(250)"/>
+            <column name="password" type="varchar(250)"/>
+            <column name="email" type="varchar(250)"/>
+        </createTable>
+
+        <addPrimaryKey tableName="user_account" columnNames="id"/>
+        <addUniqueConstraint tableName="user_account" columnNames="login_name"/>
+        <addUniqueConstraint tableName="user_account" columnNames="email"/>
+
+    </changeSet>
+
+    <changeSet id="109" author="maxim.afanasiev">
+        <renameColumn tableName="user_account" oldColumnName="login_name" newColumnName="user_name"/>
+    </changeSet>
+
+</databaseChangeLog>
