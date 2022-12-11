@@ -20,9 +20,9 @@ public class Statement {
     private Double amount;
     private LocalDate date;
     private Integer type;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.EAGER)
     private StatementCategory statementCategory;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "wallet_id")
     private Wallet wallet;
 }

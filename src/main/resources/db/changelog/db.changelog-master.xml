@@ -120,4 +120,17 @@
         <renameColumn tableName="user_account" oldColumnName="login_name" newColumnName="user_name"/>
     </changeSet>
 
+    <changeSet id="110" author="maxim.afanasiev">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="wallet" columnName="user_account_id"/>
+        </preConditions>
+        <addColumn tableName="wallet">
+            <column name="user_account_id" type="number(20,0)"/>
+        </addColumn>
+        <addForeignKeyConstraint baseTableName="wallet" baseColumnNames="user_account_id" constraintName="fk_wallet_user_owner" referencedTableName="user_account"
+                                 referencedColumnNames="id"/>
+        <addDefaultValue tableName="wallet" columnName="user_account_id" defaultValue="0"/>
+        <addNotNullConstraint tableName="wallet" columnName="user_account_id"/>
+    </changeSet>
+
 </databaseChangeLog>
