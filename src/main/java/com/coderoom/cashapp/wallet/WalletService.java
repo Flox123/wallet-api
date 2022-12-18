@@ -15,7 +15,7 @@ public class WalletService {
         this.walletRepository = walletRepository;
     }
 
-    protected List<Wallet> findAllWallet(){
+    public List<Wallet> findAllWallet(){
         return walletRepository.findAll();
     }
 

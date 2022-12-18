@@ -1,0 +1,12 @@
+== Rest convention
+include::etc/rest_conv.adoc[]
+== Endpoints
+=== Wallet
+==== Get wallet by ID
+===== Curl example
+include::{snippets}/findWalletById/curl-request.adoc[]
+===== HTTP Request
+include::{snippets}/findWalletById/http-request.adoc[]
+===== HTTP Response
+====== Success HTTP responses
+include::{snippets}/findWalletById/http-response.adoc[]
